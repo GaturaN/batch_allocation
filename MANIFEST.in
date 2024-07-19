@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include allocate_batch *.css
+recursive-include allocate_batch *.csv
+recursive-include allocate_batch *.html
+recursive-include allocate_batch *.ico
+recursive-include allocate_batch *.js
+recursive-include allocate_batch *.json
+recursive-include allocate_batch *.md
+recursive-include allocate_batch *.png
+recursive-include allocate_batch *.py
+recursive-include allocate_batch *.svg
+recursive-include allocate_batch *.txt
+recursive-exclude allocate_batch *.pyc
