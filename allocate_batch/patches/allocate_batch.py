@@ -38,6 +38,7 @@ def execute():
             except Exception as e:
                 # Print an error message if batch creation fails
                 print(f"Error creating batch for item {item_code}: {str(e)}")
+                frappe.db.rollback()
         
         # # Check if batch tracking is enabled for the item
         # if not frappe.db.get_value('Item', item_code, 'has_batch_no'):
