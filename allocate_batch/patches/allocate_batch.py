@@ -1,6 +1,7 @@
 import frappe
 
 def execute():
+    
     # Print a message indicating that the patch script has started running
     print("Patch is running")
     
@@ -16,11 +17,12 @@ def execute():
     
     # Iterate over each item obtained from the query
     for item in items:
+        
         item_code = item['item_code']  # Extract the item code from the current item
         batch_name = f"{item_code}-00001"  # Default batch name series
-
         # Check if a batch with the default batch name already exists
         if not frappe.db.exists('Batch', batch_name):
+            
             # If the batch does not exist, create a new batch
             batch = frappe.get_doc({
                 'doctype': 'Batch',  # Specify the doctype as 'Batch'
@@ -38,6 +40,7 @@ def execute():
             except Exception as e:
                 # Print an error message if batch creation fails
                 print(f"Error creating batch for item {item_code}: {str(e)}")
+                # rollback the transaction in case of an error
                 frappe.db.rollback()
         
         # # Check if batch tracking is enabled for the item
