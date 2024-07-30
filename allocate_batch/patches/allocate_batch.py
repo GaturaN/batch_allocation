@@ -1,61 +1,51 @@
 import frappe
 
+
 def execute():
-    
-    # Print a message indicating that the patch script has started running
-    print("Patch is running")
-    
-    # SQL query to get all unique item codes that have transactions but no associated batches
-    items = frappe.db.sql("""
+    """
+    This function executes the patch script to create default batches for items that have transactions but no associated batches.
+    It retrieves distinct item codes from the 'Item' and 'Stock Ledger Entry' tables and checks if each item has an associated batch.
+    If an associated batch does not exist, it creates a new batch with the default batch name format of "{item_code}-00001".
+    """
+
+    # Retrieve distinct item codes from the 'Item' and 'Stock Ledger Entry' tables
+    items = frappe.db.sql(
+        """
         SELECT DISTINCT item.item_code
         FROM `tabItem` item
         JOIN `tabStock Ledger Entry` sle ON item.item_code = sle.item_code
         LEFT JOIN `tabBatch` batch ON item.item_code = batch.item
         WHERE batch.name IS NULL
         GROUP BY item.item_code
-    """, as_dict=True) #as_dict ensures query is returned as list of dictionaries rather than a list of tuples
-    
-    # Iterate over each item obtained from the query
+        """,
+        as_dict=True
+    )
+
+    # Iterate over each item code
     for item in items:
+        item_code = item["item_code"]
+        default_batch_name = f"{item_code}-00001"
         
-        item_code = item['item_code']  # Extract the item code from the current item
-        batch_name = f"{item_code}-00001"  # Default batch name series
+        # update fields in item
+        # frappe.db.set_value("Item")
+        # TODO: complete this tomorrow
+        
+        
         # Check if a batch with the default batch name already exists
-        if not frappe.db.exists('Batch', batch_name):
-            
-            # If the batch does not exist, create a new batch
-            batch = frappe.get_doc({
-                'doctype': 'Batch',  # Specify the doctype as 'Batch'
-                'batch_id': batch_name,  # Set the batch ID to the default batch name
-                'item': item_code,  # Associate the batch with the item code
-                'item_code': item_code  # Redundant field to associate the batch with the item code
-            })
+        if not frappe.db.exists("Batch", default_batch_name):
+            # Create a new batch if it does not exist
+            batch = frappe.get_doc(
+                {
+                    "doctype": "Batch",
+                    "batch_id": default_batch_name,
+                    "item": item_code,
+                    "item_code": item_code
+                }
+            )
             try:
-                # Insert the new batch into the database, ignoring permissions
+                # Insert the new batch into the database
                 batch.insert(ignore_permissions=True)
-                # Commit the transaction to save the changes
                 frappe.db.commit()
-                # Print a success message indicating the batch was created
-                print(f"Created default batch: {batch_name} for item: {item_code}")
             except Exception as e:
-                # Print an error message if batch creation fails
-                print(f"Error creating batch for item {item_code}: {str(e)}")
-                # rollback the transaction in case of an error
+                # Rollback the transaction if an error occurs
                 frappe.db.rollback()
-        
-        # # Check if batch tracking is enabled for the item
-        # if not frappe.db.get_value('Item', item_code, 'has_batch_no'):
-        #     # If not, retrieve the item document
-        #     item_doc = frappe.get_doc('Item', item_code)
-        #     # Enable batch tracking by setting the has_batch_no field to 1
-        #     item_doc.has_batch_no = 1
-        #     try:
-        #         # Save the updated item document, ignoring permissions
-        #         item_doc.save(ignore_permissions=True)
-        #         # Commit the transaction to save the changes
-        #         frappe.db.commit()
-        #         # Print a success message indicating batch tracking was enabled
-        #         print(f"Enabled batch tracking for item: {item_code}")
-        #     except Exception as e:
-        #         # Print an error message if enabling batch tracking fails
-        #         print(f"Error updating item {item_code}: {str(e)}")
