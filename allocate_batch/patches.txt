@@ -1,1 +1,1 @@
-allocate_batch.patches.allocate_batch
+allocate_batch.patches.batch
