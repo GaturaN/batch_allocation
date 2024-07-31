@@ -26,7 +26,7 @@ def execute():
     # Iterate over each item code
     for item in items:
         item_code = item["item_code"]
-        default_batch_name = f"{item_code}-00001"
+        default_batch_name = f"{item_code}-{'00001'}"
 
         # Show item being updated
         print(item_code, "field values being updated")
