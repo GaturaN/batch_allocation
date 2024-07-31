@@ -27,8 +27,14 @@ def execute():
         default_batch_name = f"{item_code}-00001"
         
         # update fields in item
-        # frappe.db.set_value("Item")
-        # TODO: complete this tomorrow
+        frappe.db.set_value("Item", item_code, {
+            "has_batch_no":1,
+            "create_new_batch":1,
+            "batch_number_series":item_code,
+            "has_expiry_date":1
+         })
+        frappe.db.commit()
+        
         
         
         # Check if a batch with the default batch name already exists
