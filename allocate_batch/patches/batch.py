@@ -66,3 +66,5 @@ def execute():
                 # Rollback the transaction if an error occurs
                 print(f"Error creating batch for item {item_code}: {str(e)}")
                 frappe.db.rollback()
+
+#ToDo: Allocate existing stock to created batch
