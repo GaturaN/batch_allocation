@@ -46,7 +46,7 @@ def execute():
         if not frappe.db.exists("Batch", default_batch_name):
             
             # show item whose batch is beign created
-            print(item_code, "batch is being created")
+            print(default_batch_name, "batch is being created")
             
             # Create a new batch if it does not exist
             batch = frappe.get_doc(
