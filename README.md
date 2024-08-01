@@ -35,7 +35,7 @@ If the patch does not run during site migrate, it might be because the app has b
     Once the logs are deleted, you can run the patch again using the following command:
 
     ```bash
-    bench --site dev.bulkbox.cloud run-patch allocate_batch.patches.batch_prod
+    bench --site site.name run-patch allocate_batch.patches.batch_prod
     ```
 
 
