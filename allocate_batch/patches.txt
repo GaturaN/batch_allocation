@@ -1,1 +1,1 @@
-allocate_batch.patches.batch_prod (text to be deleted)
+allocate_batch.patches.batch
