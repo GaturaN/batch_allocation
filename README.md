@@ -1,6 +1,6 @@
 ## Allocate Batch
 
-Creates batches for itesm with transaction but have no batches in the system. It does not allocate the existing stock to the batch. This can be done through Stock Reconciliation or modify the code to allocate existing stock to the created batch.
+Creates batches for items with transaction but have no batches in the system. It does not allocate the existing stock to the batch. This can be done through Stock Reconciliation or modify the code to allocate existing stock to the created batch.
 
 ## Handling Patch Execution Issues
 
